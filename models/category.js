@@ -15,3 +15,23 @@ var categorySchema = mongoose.schema({
 });
 
 var Category = module.exports = mongoose.model('Category', categorySchema);
+
+// Get categories
+module.exports.getCategories = function(callback, limit){
+	Category.find(callback).limit(limit).sort([['title', 'ascending']]);	
+};
+
+// Add category
+module.exports.addCategory = function(category, callback){
+	Category.create(category, callback);	
+};
+
+// Get Single Category
+module.exports.getCategoryById = function(id, callback){
+	Category.findById(id, callback);
+}
+
+// Update Category
+module.exports.updateCategory = function(query, update, options, callback){
+	Category.findOneAndUpdate(query, update, options, callback);
+}
