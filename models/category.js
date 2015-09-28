@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 // Category Schema
-var categorySchema = mongoose.schema({
+var categorySchema = mongoose.Schema({
 	title: {
 		type: String
 	},
