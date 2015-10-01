@@ -39,3 +39,26 @@ var articleSchema = mongoose.Schema({
 		}
 	}]
 });
+
+
+var Article = module.exports = mongoose.model('Article', articleSchema);
+
+// Get articles
+module.exports.getArticles = function(query, callback, limit){
+	Article.find(query, callback).limit(limit);
+};
+
+// Add Article
+module.exports.addArticle = function(article, callback){
+	Article.create(article, callback);
+};
+
+// Get Single Article
+module.exports.getArticleById = function(id, callback){
+	Article.findById(id, callback);
+};
+
+// Update Article
+module.exports.updateArticle = function(query, update, options, callback){
+	Article.findOneAndUpdate(query, update, options, callback);
+};
