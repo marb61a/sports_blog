@@ -33,5 +33,16 @@ router.get('/category/:category_id', function(req, res, next) {
   res.render('articles');
 });
 
+router.delete('/delete/:id', function(req, res){
+	var query = {_id: [req.params.id]};
+    Article.remove(query, function(err){
+        if(err){
+				res.send('Error: '+err);
+        } else {
+            res.status(204).send();
+        }
+    });
+});
+
 
 module.exports = router;
