@@ -46,10 +46,12 @@ router.get('/category/:category_id', function(req, res, next) {
 });
 
 router.post('/add', function(req, res){
+	// Validation rules
 	req.checkBody('title', 'Title is required').notEmpty();
 	req.checkBody('author','Author field is required').notEmpty();
     req.checkBody('category','Category field is required').notEmpty();
     
+    // Check errors
     var errors = req.validationErrors();
     
     if(errors){
@@ -76,6 +78,47 @@ router.post('/add', function(req, res){
 				res.redirect('/manage/articles');
 			}
 		});
+    }
+});
+
+
+router.post('/edit/:id', function(req, res, next) {
+    // Validation rules
+	req.checkBody('title', 'Title is required').notEmpty();
+	req.checkBody('author','Author field is required').notEmpty();
+    req.checkBody('category','Category field is required').notEmpty();
+    
+    // Check errors
+    var errors = req.validationErrors();
+    
+    if(errors){
+    	res.render('edit_article',{
+			"errors": errors,
+			"title": req.body.title,
+            "subtitle": req.body.subtitle,
+			"body": req.body.body,
+            "author": req.body.author,
+            "category": req.body.category
+		});
+    }else{
+    	var article = new Article();
+    	var query = {_id:[req.params.id]};
+    	var update = {
+            title:req.body.title, 
+            subtitle:req.body.subtitle,
+            category:req.body.category,
+            author:req.body.author
+        };
+        
+        Article.updateArticle(query, update, {}, function(err, article){
+        	if(err){
+        		res.send('Error' + err);
+        	}else{
+        		req.flash('success','Article Updated');
+                res.location('/manage/articles');
+                res.redirect('/manage/articles');
+        	}
+        });
     }
 });
 
