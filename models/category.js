@@ -42,4 +42,4 @@ module.exports.getCategoryTitle = function(id, callback){
 	query.exec(function(err, category){
 		cb(null, !!category);
 	})
-}
+};

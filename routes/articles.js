@@ -30,7 +30,53 @@ router.get('/show/:id', function(req, res, next) {
 });
 
 router.get('/category/:category_id', function(req, res, next) {
-  res.render('articles');
+  Article.getArticles({category:req.params.category_id}, function(err, articles){
+		if(err){
+			console.log(err);
+			res.send(err);
+		} else {
+            Category.getCategoryById(req.params.category_id, function(err, category){
+                res.render('articles', {
+                    "title": category.title,
+                    "articles": articles
+                });
+            });
+		}
+	});
+});
+
+router.post('/add', function(req, res){
+	req.checkBody('title', 'Title is required').notEmpty();
+	req.checkBody('author','Author field is required').notEmpty();
+    req.checkBody('category','Category field is required').notEmpty();
+    
+    var errors = req.validationErrors();
+    
+    if(errors){
+    	Category.getCategories(function(err, categories){
+			res.render('add_article', {
+				errors: errors,
+				title: "Add Article",
+				categories: categories
+			});
+		});
+    }else{
+    	var article = new Article();
+    	article.title = req.body.title;
+        article.subtitle = req.body.subtitle;
+        article.category = req.body.category;
+        article.body = req.body.body;
+        article.author = req.body.author;
+
+		Article.addArticle(article, function(err, article){
+			if(err){
+				res.send(err);
+			} else {
+				req.flash('success', 'Article Saved');
+				res.redirect('/manage/articles');
+			}
+		});
+    }
 });
 
 router.delete('/delete/:id', function(req, res){

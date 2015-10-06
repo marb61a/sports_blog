@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-Category = require('../models/Category.js');
+Category = require('../models/category.js');
 
 router.get('/articles', function(req, res, next) {
 	Article.getArticles(function(err, articles){
