@@ -24,6 +24,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+app.locals.moment = require('moment');
 
 
 // Allows for the app to work properly in cloud9 ide
