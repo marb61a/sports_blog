@@ -133,5 +133,60 @@ router.delete('/delete/:id', function(req, res){
     });
 });
 
+router.post('/comments/add/:id', function (req, res, next){
+	// Validation rules
+	req.checkBody('title', 'Title is required').notEmpty();
+	req.checkBody('author','Author field is required').notEmpty();
+    req.checkBody('category','Category field is required').notEmpty();
+    
+    // Check errors
+    var errors = req.validationErrors();
+    
+    if(errors){
+    	Article.getArticleById([req.params.id], function(err, article){
+            if(err){
+                console.log(err);
+                res.send(err);
+            } else {
+               res.render('article',{
+                    "errors": errors,
+                    "article": article,
+                    "comment_subject": req.body.comment_subject,
+                    "comment_author": req.body.comment_author,
+                    "comment_body": req.body.comment_body,
+                    "comment_email": req.body.comment_email
+                });
+            }
+	   });
+    } else{
+    	var article = new Article();
+    	var query = {_id:[req.params.id]};
+    	var comment = {
+    		"comment_subject":req.body.comment_subject, 
+            "comment_author":req.body.comment_author,
+            "comment_body":req.body.comment_body,
+            "comment_email":req.body.comment_email
+    	};
+    	
+    	 Article.addComment(query, comment, function(err, article){
+            if(err){
+				res.send('Error: '+err);
+			} else {
+                Article.getArticleById([req.params.id], function(err, article){
+                    if(err){
+                        console.log(err);
+                        res.send(err);
+                    } else {
+                       res.render('article',{
+                            "article": article,
+                            "successMsg": 'Comment Added'
+                        });
+                    }
+               });
+            }
+        });
+    }
+});
+
 
 module.exports = router;
