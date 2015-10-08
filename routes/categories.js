@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-Category = require("../models/Category.js");
+Category = require('../models/Category.js');
 
 router.get('/', function(req, res, next) {
-  Category.getCategories(function(err, categories){
+	Category.getCategories(function(err, categories){
 		if(err){
 			res.send(err);
 		} else {
@@ -71,7 +71,7 @@ router.post('/edit/:id', function(req, res){
 });
 
 
-router.delete('/delte/:id', function(req, res){
+router.delete('/delete/:id', function(req, res){
 	var query = {_id: [req.params.id]};
 	Category.remove(query, function(err){
 		if(err){

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-Category = require('../models/category.js');
+Category = require('../models/Category.js');
 
 router.get('/articles', function(req, res, next) {
 	Article.getArticles(function(err, articles){
@@ -67,7 +67,7 @@ router.get('/categories/edit/:id', function(req, res, next) {
 				category: category
 			});
 		}
-  });
+  })
 });
 
 

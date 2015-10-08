@@ -30,6 +30,7 @@ app.locals.moment = require('moment');
 // Allows for the app to work properly in cloud9 ide
 app.listen(process.env.PORT, process.env.IP);
 
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
